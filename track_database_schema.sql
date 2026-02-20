@@ -216,9 +216,9 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`results` (
   `points` INT NULL DEFAULT NULL,
   `result_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`result_id`),
-  UNIQUE INDEX `unique_meet_event_athlete_round` (`meet_event_id` ASC, `athlete_id` ASC) VISIBLE,
   INDEX `fk_meet_events_id_idx` (`meet_event_id` ASC) VISIBLE,
   INDEX `fk_athletes_idx` (`athlete_id` ASC) VISIBLE,
+  UNIQUE INDEX `unique_meet_event_athlete_round` (`meet_event_id` ASC, `athlete_id` ASC, `round_number` ASC) VISIBLE,
   CONSTRAINT `fk_athletes`
     FOREIGN KEY (`athlete_id`)
     REFERENCES `ncaa_track`.`athletes` (`athlete_id`)
@@ -278,4 +278,5 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
