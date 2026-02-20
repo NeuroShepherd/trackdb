@@ -110,7 +110,13 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`meets` (
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
   PRIMARY KEY (`meet_id`),
+  INDEX `fk_meets_track_idx` (`track_id` ASC) VISIBLE,
   INDEX `fk_meets_universities_idx` (`host_university_id` ASC) VISIBLE,
+  CONSTRAINT `fk_meets_track`
+    FOREIGN KEY (`track_id`)
+    REFERENCES `ncaa_track`.`tracks` (`track_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_meets_universities`
     FOREIGN KEY (`host_university_id`)
     REFERENCES `ncaa_track`.`universities` (`universities_id`)
@@ -195,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`results` (
   `points` INT NULL DEFAULT NULL,
   `result_date` DATE NULL DEFAULT NULL,
   PRIMARY KEY (`result_id`),
-  UNIQUE INDEX `unique_meet_event_athlete_round` (`meet_event_id` ASC, `athlete_id` ASC) VISIBLE,
+  UNIQUE INDEX `unique_meet_event_athlete_round` (`meet_event_id` ASC, `athlete_id` ASC, `round_number` ASC) VISIBLE,
   INDEX `fk_meet_events_id_idx` (`meet_event_id` ASC) VISIBLE,
   INDEX `fk_athletes_idx` (`athlete_id` ASC) VISIBLE,
   CONSTRAINT `fk_athletes`
@@ -219,6 +225,10 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`track_universities_map` (
   `university_id` INT NOT NULL,
   `track_id` INT NOT NULL,
   PRIMARY KEY (`university_id`, `track_id`),
+  INDEX `fk_track_universities_map_track1_idx` (`track_id` ASC) VISIBLE,
+  CONSTRAINT `fk_track_universities_map_track1`
+    FOREIGN KEY (`track_id`)
+    REFERENCES `ncaa_track`.`tracks` (`track_id`),
   CONSTRAINT `fk_track_universities_map_universities`
     FOREIGN KEY (`university_id`)
     REFERENCES `ncaa_track`.`universities` (`universities_id`))
@@ -250,6 +260,10 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`university_conference_map` (
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
   PRIMARY KEY (`university_id`, `conference_id`),
+  INDEX `fk_university_conference_map_conference1_idx` (`conference_id` ASC) VISIBLE,
+  CONSTRAINT `fk_university_conference_map_conference1`
+    FOREIGN KEY (`conference_id`)
+    REFERENCES `ncaa_track`.`conferences` (`conference_id`),
   CONSTRAINT `fk_university_conference_map_universities1`
     FOREIGN KEY (`university_id`)
     REFERENCES `ncaa_track`.`universities` (`universities_id`))
