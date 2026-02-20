@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`athlete_universities_map` (
   `athlete_id` INT NOT NULL,
   `universities_id` INT NOT NULL,
   `start_date` DATE NOT NULL,
+  `end_date` DATE NULL,
   PRIMARY KEY (`athlete_id`, `universities_id`, `start_date`),
   INDEX `fk_athlete_universities_map_universities1_idx` (`universities_id` ASC) VISIBLE,
   CONSTRAINT `fk_athlete_universities_map_athletes1`
@@ -65,7 +66,8 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ncaa_track`.`divisions` (
   `division_id` INT NOT NULL,
-  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `name` VARCHAR(80) NULL DEFAULT NULL,
+  `abbreviation` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`division_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
@@ -78,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`conferences` (
   `conference_id` INT NOT NULL AUTO_INCREMENT,
   `division_id` INT NOT NULL,
   `name` VARCHAR(200) NOT NULL,
-  `region` VARCHAR(45) NULL DEFAULT NULL,
+  'abbreviation' VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`conference_id`),
   INDEX `fk_conference_divisions1_idx` (`division_id` ASC) VISIBLE,
   CONSTRAINT `fk_conference_divisions1`
@@ -278,5 +280,4 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
 
