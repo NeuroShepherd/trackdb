@@ -31,12 +31,12 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `ncaa_track`.`universities`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ncaa_track`.`universities` (
-  `universities_id` INT NOT NULL AUTO_INCREMENT,
+  `university_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NOT NULL,
   `city` VARCHAR(45) NULL DEFAULT NULL,
   `state` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`universities_id`),
-  UNIQUE INDEX `iduniversities_UNIQUE` (`universities_id` ASC) VISIBLE)
+  PRIMARY KEY (`university_id`),
+  UNIQUE INDEX `iduniversities_UNIQUE` (`university_id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -46,17 +46,17 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ncaa_track`.`athlete_universities_map` (
   `athlete_id` INT NOT NULL,
-  `universities_id` INT NOT NULL,
+  `university_id` INT NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NULL,
-  PRIMARY KEY (`athlete_id`, `universities_id`, `start_date`),
-  INDEX `fk_athlete_universities_map_universities1_idx` (`universities_id` ASC) VISIBLE,
+  PRIMARY KEY (`athlete_id`, `university_id`, `start_date`),
+  INDEX `fk_athlete_universities_map_universities1_idx` (`university_id` ASC) VISIBLE,
   CONSTRAINT `fk_athlete_universities_map_athletes1`
     FOREIGN KEY (`athlete_id`)
     REFERENCES `ncaa_track`.`athletes` (`athlete_id`),
   CONSTRAINT `fk_athlete_universities_map_universities1`
-    FOREIGN KEY (`universities_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`))
+    FOREIGN KEY (`university_id`)
+    REFERENCES `ncaa_track`.`universities` (`university_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -67,7 +67,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `ncaa_track`.`divisions` (
   `division_id` INT NOT NULL,
   `name` VARCHAR(80) NULL DEFAULT NULL,
-  `abbreviation` VARCHAR(45) NULL DEFAULT NULL,
+  `abbreviation` VARCHAR(45) NULL,
   PRIMARY KEY (`division_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`conferences` (
   `conference_id` INT NOT NULL AUTO_INCREMENT,
   `division_id` INT NOT NULL,
   `name` VARCHAR(200) NOT NULL,
-  'abbreviation' VARCHAR(45) NULL DEFAULT NULL,
+  `abbreviation` VARCHAR(45) NULL,
   PRIMARY KEY (`conference_id`),
   INDEX `fk_conference_divisions1_idx` (`division_id` ASC) VISIBLE,
   CONSTRAINT `fk_conference_divisions1`
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`meets` (
   INDEX `fk_meets_track_idx` (`track_id` ASC) VISIBLE,
   CONSTRAINT `fk_meets_universities`
     FOREIGN KEY (`host_university_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`)
+    REFERENCES `ncaa_track`.`universities` (`university_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_meets_track`
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`meet_universities_map` (
     REFERENCES `ncaa_track`.`meet_university_roles` (`role_id`),
   CONSTRAINT `fk_meet_universities_map_universities`
     FOREIGN KEY (`university_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`))
+    REFERENCES `ncaa_track`.`universities` (`university_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -245,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`track_universities_map` (
   INDEX `fk_track_universities_map_track1_idx` (`track_id` ASC) VISIBLE,
   CONSTRAINT `fk_track_universities_map_universities`
     FOREIGN KEY (`university_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`),
+    REFERENCES `ncaa_track`.`universities` (`university_id`),
   CONSTRAINT `fk_track_universities_map_track1`
     FOREIGN KEY (`track_id`)
     REFERENCES `ncaa_track`.`tracks` (`track_id`)
@@ -263,11 +263,12 @@ CREATE TABLE IF NOT EXISTS `ncaa_track`.`university_conference_map` (
   `conference_id` INT NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
-  PRIMARY KEY (`university_id`, `conference_id`),
+  `sex` ENUM('male', 'female') NOT NULL,
+  PRIMARY KEY (`university_id`, `conference_id`, `start_date`, `sex`),
   INDEX `fk_university_conference_map_conference1_idx` (`conference_id` ASC) VISIBLE,
   CONSTRAINT `fk_university_conference_map_universities1`
     FOREIGN KEY (`university_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`),
+    REFERENCES `ncaa_track`.`universities` (`university_id`),
   CONSTRAINT `fk_university_conference_map_conference1`
     FOREIGN KEY (`conference_id`)
     REFERENCES `ncaa_track`.`conferences` (`conference_id`)
@@ -277,7 +278,23 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
+-- -----------------------------------------------------
+-- Table `ncaa_track`.`univeristy_track_program`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ncaa_track`.`univeristy_track_program` (
+  `university_id` INT NOT NULL,
+  `sex` ENUM('male', 'female') NOT NULL,
+  `start_date` VARCHAR(45) NOT NULL,
+  `end_date` VARCHAR(45) NULL,
+  PRIMARY KEY (`university_id`, `sex`, `start_date`),
+  CONSTRAINT `fk_utp_university`
+    FOREIGN KEY (`university_id`)
+    REFERENCES `ncaa_track`.`universities` (`university_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
