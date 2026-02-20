@@ -42,24 +42,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `ncaa_track`.`athlete_univerisities_map`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ncaa_track`.`athlete_univerisities_map` (
-  `athlete_id` INT NOT NULL,
-  `universities_id` INT NOT NULL,
-  PRIMARY KEY (`athlete_id`, `universities_id`),
-  INDEX `fk_athlete_univerisities_map_universities1_idx` (`universities_id` ASC) VISIBLE,
-  CONSTRAINT `fk_athlete_univerisities_map_athletes1`
-    FOREIGN KEY (`athlete_id`)
-    REFERENCES `ncaa_track`.`athletes` (`athlete_id`),
-  CONSTRAINT `fk_athlete_univerisities_map_universities1`
-    FOREIGN KEY (`universities_id`)
-    REFERENCES `ncaa_track`.`universities` (`universities_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
 -- Table `ncaa_track`.`athlete_universities_map`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ncaa_track`.`athlete_universities_map` (
@@ -318,3 +300,4 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
