@@ -120,7 +120,7 @@ This document provides a comprehensive list of NCAA Division I track and field c
 
 #### **Horizon League**
 - **Status**: Active throughout 2010-2026
-- **Track & Field**: Does NOT sponsor track and field (limited sports focus)
+- **Track & Field**: Does sponsor track and field (limited sports focus)
 
 #### **IC4A/ECAC (Imperial College Four / Eastern College Athletic Conference)**
 - **Status**: Active in track and field throughout 2010-2026
