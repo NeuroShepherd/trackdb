@@ -1,2 +1,3 @@
 *.mwb*
 .env
+__pycache__
