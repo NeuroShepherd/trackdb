@@ -1,3 +1,4 @@
 *.mwb*
 .env
 __pycache__
+scripts/output
